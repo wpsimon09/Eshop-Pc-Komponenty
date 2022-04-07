@@ -1,5 +1,7 @@
 CREATE DATABASE eShopPCKomponenty
 
+DROP TABLE SkladovaKarta
+
 USE eShopPCKomponenty
 
 CREATE TABLE PCKompotent
@@ -13,30 +15,7 @@ CREATE TABLE PCKompotent
     CONSTRAINT pk_komponentu    PRIMARY KEY(id_komponentu)
 )
 
-CREATE TABLE SkladovaKarta
-(
-    id_karty                    INTEGER             IDENTITY,
-    id_komponentu               INTEGER             not null,
-    mnozstvo                    INTEGER             not null,
-    MernaJednota                VARCHAR(5)          not null,
-    SumaNaMernuJednotku         INTEGER             not null,
-    constraint pk_karty         PRIMARY KEY (id_karty),
-    CONSTRAINT fk_komponentu    FOREIGN KEY(id_komponentu) REFERENCES PCKompotent(id_komponentu)
-)
-
-
-CREATE TABLE Sklad
-(
-    id_skladu                   INTEGER             IDENTITY,
-    id_karty                    INTEGER             not null,
-    Ulica                       VARCHAR(40)         not null,
-    Cislo                       INTEGER             not null,
-    Mesto                       VARCHAR(30)         not null,
-    PSC                         INTEGER             not null,
-    Kapacita                    int                 not null,
-    CONSTRAINT pk_skladu        PRIMARY KEY(id_skladu),
-    CONSTRAINT fk_karty         FOREIGN KEY(id_karty) REFERENCES SkladovaKarta(id_karty)
-)
+ALTER TABLE PCKompotent ALTER COLUMN typKomponentu VARCHAR(100) not null
 
 CREATE TABLE Uzivatel
 (
@@ -63,7 +42,6 @@ CREATE TABLE Objednvaka
     CONSTRAINT pk_objednavka   PRIMARY KEY (id_objednavky),
     CONSTRAINT fk_komponent    FOREIGN KEY (id_komponentu) REFERENCES PCKompotent(id_komponentu),
     CONSTRAINT fk_uzivatel     FOREIGN KEY (id_uzivatel)   REFERENCES Uzivatel(id_uzivatel),
-    CONSTRAINT fk_sklad        FOREIGN KEY (id_sklad) REFERENCES Sklad(id_skladu)
 )
 
 ALTER TABLE Objednvaka ADD Platba int not null --1 karta || 2 dobierka 
@@ -71,4 +49,6 @@ ALTER TABLE Objednvaka ADD CisloKarty int null
 ALTER TABLE Objednvaka ADD Platnost CHAR(5) null
 ALTER TABLE Objednvaka ADD KodKarty CHAR(3) null
 
-GO
+
+select*from PCKompotent
+SELECT*from Uzivatel
